@@ -49,7 +49,10 @@ public class SubServiceExpertService {
         if (subServiceExpertRepository.findBySubServicesAndExpert(subservicesService.findBySubServiceName(subServiceName), expertService.findByUsername(expertUsername)).isPresent())
             throw new DuplicateInformationException(String.format("the entity with %s & %s is duplicate", expertUsername, subServiceName));
         else {
-            SubServiceExpert subServiceExpert=SubServiceExpert.builder().expert(expertService.findByUsername(expertUsername)).subServices(subservicesService.findBySubServiceName(subServiceName)).registerDate(LocalDate.now()).build();
+            SubServiceExpert subServiceExpert=SubServiceExpert.builder()
+                    .expert(expertService.findByUsername(expertUsername))
+                    .subServices(subservicesService.findBySubServiceName(subServiceName))
+                    .registerDate(LocalDate.now()).build();
             return subServiceExpertRepository.save(subServiceExpert);
         }
 

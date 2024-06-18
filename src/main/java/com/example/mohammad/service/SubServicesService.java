@@ -66,4 +66,15 @@ public class SubServicesService  {
         subServicesRepository.delete(findBySubServiceName(name));
     }
 
+    public void updateDescription(String description,String name){
+        if (subServicesRepository.findByName(name).isEmpty())
+            throw new NullListException(String.format("not found any sub service with %s  ",name));
+       else subServicesRepository.updateDescription(description,name);
+    }
+    public void updateBasePrice(double basePrice ,String name){
+        if (subServicesRepository.findByName(name).isEmpty())
+            throw new NullListException(String.format("not found any sub service with %s  ",name));
+        else subServicesRepository.updateBasePrice(basePrice,name);
+    }
+
 }
