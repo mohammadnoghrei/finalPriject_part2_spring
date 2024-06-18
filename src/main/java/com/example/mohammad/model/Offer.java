@@ -27,10 +27,14 @@ public class Offer  {
     @ManyToOne
     @NotNull
     private Order order;
-    @ManyToMany
-    private List<Expert>expertList=new ArrayList<>();
+    @ManyToOne (cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
+    private Expert expert;
     @FutureOrPresent
     LocalDate sendOfferDate;
+    @FutureOrPresent
+    LocalDate startOfferDate;
+    @FutureOrPresent
+    LocalDate endOfferDate;
     boolean confirmed;
 
 
