@@ -6,17 +6,10 @@ import com.example.mohammad.exception.InvalidEntityException;
 import com.example.mohammad.exception.NotFoundException;
 import com.example.mohammad.exception.NotValidPasswordException;
 import com.example.mohammad.model.Customer;
-import com.example.mohammad.repository.CustomerRepository;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -104,7 +97,7 @@ public class CustomerServiceTest{
     @Test
     @Order(6)
     void findByIdTest() {
-        Customer customer=customerService.findById(3l);
+        Customer customer=customerService.findById(12l);
         assertEquals("mohammad123", customer.getUsername());
     }
 
@@ -112,26 +105,28 @@ public class CustomerServiceTest{
     @Order(7)
     void findByUsernameTest() {
         Customer customer=customerService.findByUsername("mohammad123");
-        assertEquals(3l, customer.getId());
+        assertEquals(12l, customer.getId());
     }
 
     @Test
     @Order(8)
     void deleteByIdTest(){
-        customerService.deleteById(4l);
-        assertThrows(NotFoundException.class, () -> customerService.findById(3l));
+        customerService.deleteById(12l);
+        assertThrows(NotFoundException.class, () -> customerService.findById(10l));
     }
+
     @Test
     @Order(9)
-    void deleteByUsernameTest(){
-        customerService.deleteByUsername("mohammad123");
-        assertThrows(NotFoundException.class, () -> customerService.findByUsername("mohammad123"));
+    void signUpCorrect2() {
+        Customer customer=customerService.registerCustomer(currentCustomer);
+        assertEquals(customer.getEmail(), customerService.findById(customer.getId()).getEmail());
     }
+
 
     @Order(10)
     @Test
     void updatePasswordTest(){
-        customerService.updatePassword("mohammad123","SDFfg@124","SDFfg@125","SDFfg@125");
+        customerService.updatePassword("mohammad123","SDFfg@123","SDFfg@125","SDFfg@125");
         assertEquals("SDFfg@125",customerService.findByUsername("mohammad123").getPassword());
     }
 
@@ -140,6 +135,11 @@ public class CustomerServiceTest{
     void NotValidPasswordExceptionUpdatePasswordTest(){
         assertThrows(NotValidPasswordException.class, () -> customerService.updatePassword("mohammad123","SDFf124","SDFfg@1285","SDFfg@125"));
     }
-
+    @Test
+    @Order(12)
+    void deleteByUsernameTest(){
+        customerService.deleteByUsername("mohammad123");
+        assertThrows(NotFoundException.class, () -> customerService.findByUsername("mohammad123"));
+    }
 
 }
