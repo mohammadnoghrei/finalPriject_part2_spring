@@ -1,12 +1,13 @@
 package com.example.mohammad.service;
 
+import com.example.mohammad.exception.DuplicateInformationException;
 import com.example.mohammad.exception.InvalidEntityException;
 import com.example.mohammad.exception.NotFoundException;
 import com.example.mohammad.exception.NullListException;
-import com.example.mohammad.model.Customer;
 import com.example.mohammad.model.Services;
 import com.example.mohammad.model.SubServices;
 import com.example.mohammad.repository.SubServicesRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -23,10 +24,10 @@ import java.util.Set;
 public class SubServicesService  {
     private final SubServicesRepository subServicesRepository;
     private final ServicesService servicesService;
-    private final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-    private final Validator validator = validatorFactory.getValidator();
+  ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+     Validator validator = validatorFactory.getValidator();
 
-
+//    private final Validator validator ;
     public boolean validate(SubServices entity) {
 
         Set<ConstraintViolation<SubServices>> violations = validator.validate(entity);
@@ -49,6 +50,8 @@ public class SubServicesService  {
         subServices.setServices(servicesService.findByNameServices(serviceName));
         if (!validate(subServices))
             throw new InvalidEntityException(String.format("the customer with %s have invalid variable", subServices.getName()));
+        else if (subServicesRepository.findByName(subServices.getName()).isPresent())
+        {throw new DuplicateInformationException(String.format("the sub service with %s is duplicate", subServices.getName()));}
         return subServicesRepository.save(subServices);
     }
     public SubServices findById(Long id) {
@@ -65,12 +68,13 @@ public class SubServicesService  {
     public void deleteByUsername(String name) {
         subServicesRepository.delete(findBySubServiceName(name));
     }
-
+@Transactional
     public void updateDescription(String description,String name){
         if (subServicesRepository.findByName(name).isEmpty())
             throw new NullListException(String.format("not found any sub service with %s  ",name));
        else subServicesRepository.updateDescription(description,name);
     }
+    @Transactional
     public void updateBasePrice(double basePrice ,String name){
         if (subServicesRepository.findByName(name).isEmpty())
             throw new NullListException(String.format("not found any sub service with %s  ",name));
