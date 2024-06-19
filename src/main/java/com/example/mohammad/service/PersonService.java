@@ -15,10 +15,10 @@ import java.util.Set;
 @Service
 public class PersonService  {
     private final PersonRepository personRepository;
-    private final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-    private final Validator validator = validatorFactory.getValidator();
+    ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+   Validator validator = validatorFactory.getValidator();
 
-
+//    private final Validator validator ;
     public boolean validate(Person entity) {
 
         Set<ConstraintViolation<Person>> violations = validator.validate(entity);
