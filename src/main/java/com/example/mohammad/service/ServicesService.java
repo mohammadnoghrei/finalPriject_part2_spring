@@ -1,5 +1,6 @@
 package com.example.mohammad.service;
 
+import com.example.mohammad.exception.DuplicateInformationException;
 import com.example.mohammad.exception.NotFoundException;
 import com.example.mohammad.model.Customer;
 import com.example.mohammad.model.Services;
@@ -18,10 +19,10 @@ import java.util.Set;
 @Service
 public class ServicesService  {
     private final ServicesRepository servicesRepository;
-    private final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-    private final Validator validator = validatorFactory.getValidator();
+     ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+     Validator validator = validatorFactory.getValidator();
 
-
+//    private final Validator validator ;
     public boolean validate(Services entity) {
 
         Set<ConstraintViolation<Services>> violations = validator.validate(entity);
@@ -34,6 +35,13 @@ public class ServicesService  {
             }
             return false;
         }
+    }
+    public Services saveServices(String serviceName){
+        if (servicesRepository.findByServiceName(serviceName).isPresent())
+            throw new DuplicateInformationException(String.format("the service with %s is duplicate", serviceName));
+        Services services=new Services();
+        services.setServiceName(serviceName);
+        return servicesRepository.save(services);
     }
     public Services findByNameServices(String name){
         return servicesRepository.findByServiceName(name).orElseThrow(()-> new NotFoundException(String.format("the entity with %s not found",name)));
