@@ -4,15 +4,14 @@ import com.example.mohammad.exception.*;
 import com.example.mohammad.model.Expert;
 import com.example.mohammad.model.ExpertStatus;
 import com.example.mohammad.repository.ExpertRepository;
+import com.example.mohammad.utility.Util;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
-
 import java.util.Set;
 
 @Service
@@ -20,10 +19,10 @@ import java.util.Set;
 public class ExpertService {
     private final ExpertRepository expertRepository;
 
-    private final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-    private final Validator validator = validatorFactory.getValidator();
+     ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+  Validator validator = validatorFactory.getValidator();
 
-
+//    private final Validator validator ;
     public boolean validate(Expert entity) {
 
         Set<ConstraintViolation<Expert>> violations = validator.validate(entity);
@@ -37,7 +36,8 @@ public class ExpertService {
             return false;
         }
     }
-    public Expert registerCustomer(Expert expert){
+    public Expert registerExpert(Expert expert,String imagePath){
+        expert.setImage(Util.saveImage(imagePath));
         if (expertRepository.findByUsername(expert.getUsername()).isPresent())
             throw new DuplicateInformationException(String.format("the customer with %s is duplicate",expert.getUsername()));
         else if (!validate(expert)) {
@@ -67,14 +67,14 @@ public class ExpertService {
         if (expertRepository.findByUsername(username).isEmpty()) {
             throw new NotFoundException(String.format("the entity with %s not found", username));
         } else if (!newPassword.matches(passRegex) || !oldPassword.matches(passRegex) || !finalNewPassword.matches(passRegex)) {
-            throw new NotValidPasswordException(String.format("this password not valid"));
-        } else if (findByUsername(username).getPassword() != oldPassword || newPassword != finalNewPassword) {
-            throw new NotValidPasswordException(String.format("this password not valid"));
-        } else {
+            throw new NotValidPasswordException("this password not valid");
+        } else if (!findByUsername(username).getPassword().equals(oldPassword) || !newPassword.equals(finalNewPassword))
+            throw new NotValidPasswordException("this password not valid");
+        else {
             expertRepository.updatePassword(finalNewPassword, username);
         }
     }
-
+    @Transactional
     public void confirmExpert(String username){
         if (expertRepository.findByUsername(username).isEmpty())
             throw new NotFoundException(String.format("the entity with %s username not found",username));
@@ -82,6 +82,15 @@ public class ExpertService {
             throw new ConfirmationException(String.format("the entity with %s username was confirmed before your confirmation ",username));
         }
         expertRepository.confirmExpert(ExpertStatus.CONFIRMED,username);
+    }
+
+    @Transactional
+    public void updateScore(double score, String username){
+        if (expertRepository.findByUsername(username).isEmpty())
+            throw new NotFoundException(String.format("the entity with %s username not found",username));
+        if (score>0)
+            throw new InvalidEntityException(String.format("the Expert with %s have invalid variable",username));
+        expertRepository.updateScore(score,username);
     }
 
 }
