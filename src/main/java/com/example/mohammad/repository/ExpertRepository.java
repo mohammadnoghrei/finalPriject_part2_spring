@@ -21,6 +21,10 @@ public interface ExpertRepository extends JpaRepository<Expert,Long> {
     void updatePassword(String password,String username);
 
     @Modifying
+    @Query("UPDATE Expert c SET c.avgScore = :score WHERE c.username = :username")
+    void updateScore(double score,String username);
+
+    @Modifying
     @Query("UPDATE Expert c SET c.expertStatus =  :expertStatus WHERE c.username = :username")
     void confirmExpert(ExpertStatus expertStatus,String username);
 }

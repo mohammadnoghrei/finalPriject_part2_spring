@@ -16,10 +16,10 @@ public interface SubServicesRepository  extends JpaRepository<SubServices,Long> 
 
     List<SubServices> findAllByServices(Services services);
     Optional<SubServices> findByName(String name);
-    @Modifying(clearAutomatically = true,flushAutomatically = true)
+    @Modifying
     @Query("UPDATE SubServices c SET c.basePrice = :basePrice WHERE c.name = :name")
     void updateBasePrice(double basePrice,String name);
-    @Modifying(clearAutomatically = true,flushAutomatically = true)
+    @Modifying
     @Query("UPDATE SubServices c SET c.description = :description WHERE c.name = :name")
     void updateDescription(String description, String name);
 }
