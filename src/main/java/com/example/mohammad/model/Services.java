@@ -22,7 +22,7 @@ public class Services  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false,unique = true)
-    private String ServiceName;
+    private String serviceName;
     @OneToMany(mappedBy = "services",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
     private List<SubServices> subServicesList=new ArrayList<>();
 
