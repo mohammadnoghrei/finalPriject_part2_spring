@@ -16,8 +16,8 @@ import java.util.Set;
 public class AdminService  {
     private final AdminRepository adminRepository;
 
-    private final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-    private final Validator validator = validatorFactory.getValidator();
+     ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+   Validator validator = validatorFactory.getValidator();
 
 
     public boolean validate(Admin entity) {
