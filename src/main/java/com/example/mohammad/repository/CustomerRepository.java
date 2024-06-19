@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface CustomerRepository extends JpaRepository<Customer,Long> {
     Optional<Customer> findByUsername(String username);
 
-    @Modifying
+    @Modifying(clearAutomatically = true,flushAutomatically = true)
     @Query("UPDATE Customer c SET c.password = :password WHERE c.username = :username")
     void updatePassword(String password,String username);
 }

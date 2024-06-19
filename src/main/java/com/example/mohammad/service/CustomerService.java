@@ -21,8 +21,8 @@ import java.util.Set;
 public class CustomerService {
     private final CustomerRepository customerRepository;
 
-    private final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-    private final Validator validator = validatorFactory.getValidator();
+    ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+     Validator validator = validatorFactory.getValidator();
 
 
     public boolean validate(Customer entity) {
@@ -70,7 +70,7 @@ public class CustomerService {
             throw new NotFoundException(String.format("the entity with %s not found", username));
         } else if (!newPassword.matches(passRegex) || !oldPassword.matches(passRegex) || !finalNewPassword.matches(passRegex)) {
             throw new NotValidPasswordException(String.format("this password not valid"));
-        } else if (findByUsername(username).getPassword() != oldPassword || newPassword != finalNewPassword) {
+        } else if (!findByUsername(username).getPassword().equals( oldPassword )|| !newPassword.equals(finalNewPassword)) {
             throw new NotValidPasswordException(String.format("this password not valid"));
         } else {
             customerRepository.updatePassword(finalNewPassword, username);
