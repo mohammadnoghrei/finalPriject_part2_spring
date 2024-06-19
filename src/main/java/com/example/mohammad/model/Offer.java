@@ -10,8 +10,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Getter
 @Setter
@@ -24,7 +23,7 @@ public class Offer  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
     @NotNull
     private Order order;
     @ManyToOne (cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
