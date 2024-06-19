@@ -23,10 +23,10 @@ public class SubServiceExpertService {
     private final ExpertService expertService;
 
     private final SubServiceExpertRepository subServiceExpertRepository;
-    private final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-    private final Validator validator = validatorFactory.getValidator();
+     ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+     Validator validator = validatorFactory.getValidator();
 
-
+//    private final Validator validator ;
     public boolean validate(SubServiceExpert entity) {
 
         Set<ConstraintViolation<SubServiceExpert>> violations = validator.validate(entity);
