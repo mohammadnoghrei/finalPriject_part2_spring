@@ -55,9 +55,6 @@ public class CustomerService {
         } else return customerRepository.save(customer);
     }
 
-    public void deleteById(Long id) {
-        customerRepository.delete(findById(id));
-    }
 
     public void deleteByUsername(String username) {
         customerRepository.delete(findByUsername(username));

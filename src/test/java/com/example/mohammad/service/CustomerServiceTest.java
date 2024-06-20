@@ -33,7 +33,7 @@ public class CustomerServiceTest{
                 .password("SDFfg@123")
                 .cardBalance(25)
                 .email("mohammad@gmail.com")
-                .nationCode("3920066200")
+                .nationCode("5388700984")
                 .registerDate(LocalDate.now())
                 .build();
         duplicateCustomer=Customer.builder()
@@ -75,7 +75,7 @@ public class CustomerServiceTest{
     @Test
     @Order(2)
     void ThrowsNotFoundExceptionFindByIdTest() {
-        assertThrows(NotFoundException.class, () -> customerService.findById(20800l));
+        assertThrows(NotFoundException.class, () -> customerService.findById(20800L));
     }
     @Test
     @Order(3)
@@ -97,46 +97,32 @@ public class CustomerServiceTest{
     @Test
     @Order(6)
     void findByIdTest() {
-        Customer customer=customerService.findById(12l);
-        assertEquals("mohammad123", customer.getUsername());
+        Customer customer=customerService.findById(29L);
+        assertEquals("madCustomer123", customer.getUsername());
     }
 
     @Test
     @Order(7)
     void findByUsernameTest() {
-        Customer customer=customerService.findByUsername("mohammad123");
-        assertEquals(12l, customer.getId());
+        Customer customer=customerService.findByUsername("madCustomer123");
+        assertEquals(29L, customer.getId());
     }
 
-    @Test
+
     @Order(8)
-    void deleteByIdTest(){
-        customerService.deleteById(12l);
-        assertThrows(NotFoundException.class, () -> customerService.findById(10l));
-    }
-
-    @Test
-    @Order(9)
-    void signUpCorrect2() {
-        Customer customer=customerService.registerCustomer(currentCustomer);
-        assertEquals(customer.getEmail(), customerService.findById(customer.getId()).getEmail());
-    }
-
-
-    @Order(10)
     @Test
     void updatePasswordTest(){
         customerService.updatePassword("mohammad123","SDFfg@123","SDFfg@125","SDFfg@125");
         assertEquals("SDFfg@125",customerService.findByUsername("mohammad123").getPassword());
     }
 
-    @Order(11)
+    @Order(9)
     @Test
     void NotValidPasswordExceptionUpdatePasswordTest(){
         assertThrows(NotValidPasswordException.class, () -> customerService.updatePassword("mohammad123","SDFf124","SDFfg@1285","SDFfg@125"));
     }
     @Test
-    @Order(12)
+    @Order(10)
     void deleteByUsernameTest(){
         customerService.deleteByUsername("mohammad123");
         assertThrows(NotFoundException.class, () -> customerService.findByUsername("mohammad123"));
