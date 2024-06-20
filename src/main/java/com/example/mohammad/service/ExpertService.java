@@ -12,6 +12,8 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -22,7 +24,7 @@ public class ExpertService {
      ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
   Validator validator = validatorFactory.getValidator();
 
-//    private final Validator validator ;
+
     public boolean validate(Expert entity) {
 
         Set<ConstraintViolation<Expert>> violations = validator.validate(entity);
@@ -35,6 +37,9 @@ public class ExpertService {
             }
             return false;
         }
+    }
+    public List<Expert> findAllExpertByStatus(ExpertStatus expertStatus){
+        return expertRepository.findAllByExpertStatus(expertStatus);
     }
     public Expert registerExpert(Expert expert,String imagePath){
         expert.setImage(Util.saveImage(imagePath));
@@ -88,7 +93,7 @@ public class ExpertService {
     public void updateScore(double score, String username){
         if (expertRepository.findByUsername(username).isEmpty())
             throw new NotFoundException(String.format("the entity with %s username not found",username));
-        if (score>0)
+        if (score<0)
             throw new InvalidEntityException(String.format("the Expert with %s have invalid variable",username));
         expertRepository.updateScore(score,username);
     }
