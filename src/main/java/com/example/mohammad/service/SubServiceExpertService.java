@@ -4,42 +4,19 @@ package com.example.mohammad.service;
 import com.example.mohammad.exception.DuplicateInformationException;
 import com.example.mohammad.exception.NotFoundException;
 import com.example.mohammad.model.SubServiceExpert;
-import com.example.mohammad.model.SubServices;
 import com.example.mohammad.repository.SubServiceExpertRepository;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class SubServiceExpertService {
     private final SubServicesService subservicesService;
     private final ExpertService expertService;
-
     private final SubServiceExpertRepository subServiceExpertRepository;
-     ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-     Validator validator = validatorFactory.getValidator();
 
-//    private final Validator validator ;
-    public boolean validate(SubServiceExpert entity) {
-
-        Set<ConstraintViolation<SubServiceExpert>> violations = validator.validate(entity);
-        if (violations.isEmpty())
-            return true;
-        else {
-            System.out.println("Invalid user data found:");
-            for (ConstraintViolation<SubServiceExpert> violation : violations) {
-                System.out.println(violation.getMessage());
-            }
-            return false;
-        }
-    }
 
     public SubServiceExpert findBySubServiceAndExpert(String subServiceName, String expertUsername) {
         return subServiceExpertRepository.findBySubServicesAndExpert(subservicesService.findBySubServiceName(subServiceName), expertService.findByUsername(expertUsername)).orElseThrow(() -> new NotFoundException(String.format("the entity with %s & %snot found", subServiceName, expertUsername)));
@@ -55,6 +32,8 @@ public class SubServiceExpertService {
                     .registerDate(LocalDate.now()).build();
             return subServiceExpertRepository.save(subServiceExpert);
         }
-
+    }
+    public void deleteBySubServiceAndExpert(String subServiceName, String expertUsername){
+        subServiceExpertRepository.delete(findBySubServiceAndExpert(subServiceName,expertUsername));
     }
 }
