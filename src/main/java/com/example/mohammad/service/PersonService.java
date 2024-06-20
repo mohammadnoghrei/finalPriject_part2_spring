@@ -18,7 +18,6 @@ public class PersonService  {
     ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
    Validator validator = validatorFactory.getValidator();
 
-//    private final Validator validator ;
     public boolean validate(Person entity) {
 
         Set<ConstraintViolation<Person>> violations = validator.validate(entity);

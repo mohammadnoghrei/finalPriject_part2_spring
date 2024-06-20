@@ -2,7 +2,7 @@ package com.example.mohammad.service;
 
 import com.example.mohammad.exception.DuplicateInformationException;
 import com.example.mohammad.exception.NotFoundException;
-import com.example.mohammad.model.Customer;
+
 import com.example.mohammad.model.Services;
 import com.example.mohammad.repository.ServicesRepository;
 import jakarta.validation.ConstraintViolation;

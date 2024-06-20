@@ -66,9 +66,9 @@ public class CustomerService {
         if (customerRepository.findByUsername(username).isEmpty()) {
             throw new NotFoundException(String.format("the entity with %s not found", username));
         } else if (!newPassword.matches(passRegex) || !oldPassword.matches(passRegex) || !finalNewPassword.matches(passRegex)) {
-            throw new NotValidPasswordException(String.format("this password not valid"));
+            throw new NotValidPasswordException("this password not valid");
         } else if (!findByUsername(username).getPassword().equals( oldPassword )|| !newPassword.equals(finalNewPassword)) {
-            throw new NotValidPasswordException(String.format("this password not valid"));
+            throw new NotValidPasswordException("this password not valid");
         } else {
             customerRepository.updatePassword(finalNewPassword, username);
         }

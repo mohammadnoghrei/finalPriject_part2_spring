@@ -25,7 +25,7 @@ public class Expert extends Person {
     private double avgScore;
     @NotNull
     private byte[] image;
-    @OneToMany( mappedBy = "expert",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
+    @OneToMany( mappedBy = "expert")
     private List<SubServiceExpert>subServiceExperts=new ArrayList<>();
     @OneToMany (mappedBy = "expert",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
     private List<Offer>offerList=new ArrayList<>();

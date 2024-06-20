@@ -3,14 +3,11 @@ package com.example.mohammad.service;
 import com.example.mohammad.exception.DuplicateInformationException;
 import com.example.mohammad.exception.InvalidEntityException;
 import com.example.mohammad.exception.NotFoundException;
-import com.example.mohammad.model.Customer;
-import com.example.mohammad.model.Services;
 import com.example.mohammad.model.SubServices;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -119,8 +116,6 @@ public class SubServicesServiceTest {
     @Test
     @Order(14)
     void deleteByNameTest(){
-
         subServicesService.deleteByName("carWash");
-//        assertThrows(NotFoundException.class, () -> subServicesService.findBySubServiceName("joloBandi"));
     }
 }

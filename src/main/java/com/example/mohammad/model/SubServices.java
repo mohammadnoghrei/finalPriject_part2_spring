@@ -1,7 +1,6 @@
 package com.example.mohammad.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -32,7 +31,7 @@ public class SubServices  {
     @Positive
     private double basePrice;
     private String description;
-    @OneToMany( mappedBy = "subServices",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
+    @OneToMany( mappedBy = "subServices")
     private List<SubServiceExpert>subServiceExperts=new ArrayList<>();
     @OneToMany(mappedBy ="subServices" ,cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Order>orderList=new ArrayList<>();
