@@ -3,9 +3,9 @@ package com.example.mohammad.service;
 
 import com.example.mohammad.exception.InvalidEntityException;
 import com.example.mohammad.exception.NotFoundException;
-import com.example.mohammad.exception.StatusException;
+
 import com.example.mohammad.model.Offer;
-import com.example.mohammad.model.Order;
+
 import com.example.mohammad.model.OrderStatus;
 import com.example.mohammad.repository.OfferRepository;
 import jakarta.validation.ConstraintViolation;
@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -28,7 +29,6 @@ public class OfferService  {
    ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
    Validator validator = validatorFactory.getValidator();
 
-//    private final Validator validator ;
     public boolean validate(Offer entity) {
 
         Set<ConstraintViolation<Offer>> violations = validator.validate(entity);
@@ -48,26 +48,28 @@ public class OfferService  {
     }
 
     public List<Offer> findAllOfferByOrder(long orderId){
-        return offerRepository.findAllByOrder(orderService.findById(orderId));
+        List<Offer> allByOrder = offerRepository.findAllByOrder(orderService.findById(orderId));
+        allByOrder.sort(Comparator.comparing(Offer::getPrice));
+        allByOrder.sort(Comparator.comparing(a->a.getExpert().getAvgScore()));
+        return allByOrder;
     }
 
     public Offer saveOffer(Offer newOffer, long orderId, String expertUsername){
-        Offer offer=newOffer;
-        offer.setExpert(expertService.findByUsername(expertUsername));
-        offer.setOrder((orderService.findById(orderId)));
-        if (!validate(offer))
+        newOffer.setExpert(expertService.findByUsername(expertUsername));
+        newOffer.setOrder((orderService.findById(orderId)));
+        if (!validate(newOffer))
             throw new InvalidEntityException("the offer entity have invalid variable");
-        if (!offer.getOrder().getOrderStatus().equals(OrderStatus.WAITING_FOR_CHOOSE_EXPERT))
+        if (!newOffer.getOrder().getOrderStatus().equals(OrderStatus.WAITING_FOR_CHOOSE_EXPERT))
             orderService.updateOrderStatusToWaitingForChooseExpert(orderId);
-        return offerRepository.save(offer);
+        return offerRepository.save(newOffer);
     }
 
     public Offer confirmOffer(long offerId){
         Offer offer=findById(offerId);
-        if (offer.isConfirmed()==true)
+        if (offer.isConfirmed())
             throw new InvalidEntityException(String.format("the offer with %s must be not confirm",offerId));
         offer.setConfirmed(true);
-        orderService.confirmOrder(offer.getOrder(),offer.getExpert().getUsername());
+        orderService.confirmOrder(offer);
         return offerRepository.save(offer);
     }
 
