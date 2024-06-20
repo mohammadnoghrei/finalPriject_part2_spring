@@ -33,14 +33,14 @@ public class ServicesServiceTest {
     @Test
     @Order(3)
     void saveCorrect() {
-        Services services =servicesService.saveServices("vehicle");
-        assertEquals(services.getServiceName(),servicesService.findByNameServices("vehicle").getServiceName());
+        Services services =servicesService.saveServices("HomeAppliances");
+        assertEquals(services.getServiceName(),servicesService.findByNameServices("HomeAppliances").getServiceName());
     }
 
     @Test
     @Order(4)
     void duplicateInformationExceptionSaveCorrect() {
-        assertThrows(DuplicateInformationException.class, () -> servicesService.saveServices("vehicle"));
+        assertThrows(DuplicateInformationException.class, () -> servicesService.saveServices("HomeAppliances"));
     }
     @Test
     @Order(5)
@@ -52,14 +52,14 @@ public class ServicesServiceTest {
     @Test
     @Order(6)
     void findByNameTest() {
-        Services services =servicesService.findByNameServices("vehicle");
-        assertEquals("vehicle", services.getServiceName());
+        Services services =servicesService.findByNameServices("HomeAppliances");
+        assertEquals("HomeAppliances", services.getServiceName());
     }
 
     @Test
     @Order(7)
     void deleteByNameTest(){
-       servicesService.deleteByServiceName("vehicle");
-        assertThrows(NotFoundException.class, () -> servicesService.findByNameServices("vehicle"));
+       servicesService.deleteByServiceName("HomeAppliances");
+        assertThrows(NotFoundException.class, () -> servicesService.findByNameServices("HomeAppliances"));
     }
 }
