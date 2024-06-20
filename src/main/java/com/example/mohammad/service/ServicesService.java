@@ -22,7 +22,6 @@ public class ServicesService  {
      ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
      Validator validator = validatorFactory.getValidator();
 
-//    private final Validator validator ;
     public boolean validate(Services entity) {
 
         Set<ConstraintViolation<Services>> violations = validator.validate(entity);
@@ -50,9 +49,6 @@ public class ServicesService  {
         return servicesRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("the entity with %s not found", id)));
     }
 
-    public void deleteById(Long id) {
-        servicesRepository.delete(findById(id));
-    }
 
     public void deleteByServiceName(String name) {
         servicesRepository.delete(findByNameServices(name));
