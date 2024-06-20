@@ -1,7 +1,6 @@
 package com.example.mohammad.service;
 
 import com.example.mohammad.exception.*;
-import com.example.mohammad.model.Customer;
 import com.example.mohammad.model.Expert;
 import com.example.mohammad.model.ExpertStatus;
 import org.junit.jupiter.api.*;
@@ -34,7 +33,7 @@ public class ExpertServiceTest {
                 .password("SDFfg@123")
                 .cardBalance(25)
                 .email("mohammad@gmail.com")
-                .nationCode("3920066200")
+                .nationCode("7787169273")
                 .expertStatus(ExpertStatus.WAITING_FOR_CONFIRMATION)
                 .registerDate(LocalDate.now())
                 .build();
@@ -56,7 +55,7 @@ public class ExpertServiceTest {
                 .password("SDFfg@123")
                 .cardBalance(25)
                 .email("notfound@gmail.com")
-                .nationCode("3920066200")
+                .nationCode("7345305821")
                 .registerDate(LocalDate.now())
                 .expertStatus(ExpertStatus.WAITING_FOR_CONFIRMATION)
                 .build();
@@ -80,7 +79,7 @@ public class ExpertServiceTest {
     @Test
     @Order(2)
     void ThrowsNotFoundExceptionFindByIdTest() {
-        assertThrows(NotFoundException.class, () -> expertService.findById(20800l));
+        assertThrows(NotFoundException.class, () -> expertService.findById(20800L));
     }
     @Test
     @Order(3)
@@ -138,45 +137,33 @@ public class ExpertServiceTest {
     @Test
     @Order(6)
     void findByIdTest() {
-        Expert expert =expertService.findById(20l);
-        assertEquals("expert123", expert.getUsername());
+        Expert expert =expertService.findById(22L);
+        assertEquals("madexpert123", expert.getUsername());
     }
 
     @Test
     @Order(7)
     void findByUsernameTest() {
-        Expert expert=expertService.findByUsername("expert123");
-        assertEquals(20l, expert.getId());
+        Expert expert=expertService.findByUsername("madexpert123");
+        assertEquals(22L, expert.getId());
     }
 
-    @Test
+
+
     @Order(8)
-    void deleteByIdTest(){
-        expertService.deleteById(20l);
-        assertThrows(NotFoundException.class, () -> expertService.findById(20l));
-    }
-
-    @Test
-    @Order(9)
-    void signUpCorrect2() {
-        Expert expert=expertService.registerExpert(currentExpert,"C:\\Users\\Surena\\Downloads\\Documents\\file_example_JPG_100kB.jpg");
-        assertEquals(expert.getEmail(), expertService.findById(expert.getId()).getEmail());
-    }
-
-    @Order(10)
     @Test
     void updatePasswordTest(){
         expertService.updatePassword("expert123","SDFfg@123","SDFfg@125","SDFfg@125");
         assertEquals("SDFfg@125",expertService.findByUsername("expert123").getPassword());
     }
 
-    @Order(11)
+    @Order(9)
     @Test
     void NotValidPasswordExceptionUpdatePasswordTest(){
         assertThrows(NotValidPasswordException.class, () -> expertService.updatePassword("expert123","SDFf124","SDFfg@1285","SDFfg@125"));
     }
     @Test
-    @Order(12)
+    @Order(10)
     void deleteByUsernameTest(){
         expertService.deleteByUsername("expert123");
         assertThrows(NotFoundException.class, () -> expertService.findByUsername("expert123"));

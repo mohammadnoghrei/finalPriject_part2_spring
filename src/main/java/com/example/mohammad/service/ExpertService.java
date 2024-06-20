@@ -59,10 +59,6 @@ public class ExpertService {
     }
 
 
-    public void deleteById(Long id){
-        expertRepository.delete(findById(id));
-    }
-
     public void deleteByUsername(String username){
         expertRepository.delete(findByUsername(username));
     }
