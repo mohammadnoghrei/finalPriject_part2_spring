@@ -32,7 +32,7 @@ public class Order  {
     private Customer customer;
     @ManyToOne
     private Expert expert;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REMOVE})
     @NotNull
     private SubServices subServices;
     private double customerOfferPrice;
@@ -53,7 +53,7 @@ public class Order  {
     @OneToOne
     private Comment comment;
     private String address;
-    @OneToMany(mappedBy = "order",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order",fetch = FetchType.EAGER)
     private List<Offer> offerList=new ArrayList<>();
 
 

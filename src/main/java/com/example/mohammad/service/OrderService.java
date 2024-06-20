@@ -3,6 +3,7 @@ package com.example.mohammad.service;
 import com.example.mohammad.exception.InvalidEntityException;
 import com.example.mohammad.exception.NotFoundException;
 import com.example.mohammad.exception.StatusException;
+import com.example.mohammad.model.Offer;
 import com.example.mohammad.model.Order;
 import com.example.mohammad.model.OrderStatus;
 import com.example.mohammad.repository.OrderRepository;
@@ -28,7 +29,7 @@ public class OrderService {
     private final ExpertService expertService;
     ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
    Validator validator = validatorFactory.getValidator();
-//private final Validator validator ;
+
 
     public boolean validate(Order entity) {
 
@@ -97,12 +98,13 @@ public class OrderService {
         return order1;
     }
 
-    public Order confirmOrder(Order order, String expertUsername){
-        if (!order.getOrderStatus().equals(OrderStatus.WAITING_FOR_CHOOSE_EXPERT))
-            throw new StatusException(String.format("the status of entity with %s must be WAITING_FOR_CHOOSE_EXPERT before you change it", order.getId()));
-        order.setExpert(expertService.findByUsername(expertUsername));
-        order.setOrderStatus(OrderStatus.WAITING_FOR_COMING_EXPERT_TO_YOUR_LOCATION);
-        return orderRepository.save(order);
+    public Order confirmOrder( Offer offer){
+        if (!offer.getOrder().getOrderStatus().equals(OrderStatus.WAITING_FOR_CHOOSE_EXPERT))
+            throw new StatusException(String.format("the status of entity with %s must be WAITING_FOR_CHOOSE_EXPERT before you change it", offer.getOrder().getId()));
+        offer.getOrder().setExpert(offer.getExpert());
+        offer.getOrder().setFinalPrice(offer.getPrice());
+        offer.getOrder().setOrderStatus(OrderStatus.WAITING_FOR_COMING_EXPERT_TO_YOUR_LOCATION);
+        return orderRepository.save(offer.getOrder());
     }
 
     public double calculateAvgScore(String expertUsername){
