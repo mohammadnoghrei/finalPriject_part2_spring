@@ -2,6 +2,7 @@ package com.example.mohammad.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,11 +24,13 @@ public class Offer  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
+    @ManyToOne
     @NotNull
     private Order order;
-    @ManyToOne (cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER)
+    @ManyToOne (fetch = FetchType.EAGER)
     private Expert expert;
+    @Min(0)
+    double price;
     @FutureOrPresent
     LocalDate sendOfferDate;
     @FutureOrPresent
