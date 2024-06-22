@@ -40,19 +40,22 @@ public class CustomerService {
     }
 
     public Customer findById(Long id) {
-        return customerRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("the entity with %s not found", id)));
+        return customerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("the entity with %s not found", id)));
     }
 
     public Customer findByUsername(String username) {
-        return customerRepository.findByUsername(username).orElseThrow(() -> new NotFoundException(String.format("the entity with %s not found", username)));
+        return customerRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(String.format("the entity with %s not found", username)));
     }
 
     public Customer registerCustomer(Customer customer) {
         if (customerRepository.findByUsername(customer.getUsername()).isPresent())
             throw new DuplicateInformationException(String.format("the customer with %s is duplicate", customer.getUsername()));
-        else if (!validate(customer)) {
+        if  (!validate(customer)) {
             throw new InvalidEntityException(String.format("the customer with %s have invalid variable", customer.getUsername()));
-        } else return customerRepository.save(customer);
+        }
+        return customerRepository.save(customer);
     }
 
 
