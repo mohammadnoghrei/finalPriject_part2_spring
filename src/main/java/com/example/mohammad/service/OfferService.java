@@ -44,7 +44,8 @@ public class OfferService  {
     }
 
     public Offer findById(Long id){
-        return offerRepository.findById(id).orElseThrow(()-> new NotFoundException(String.format("the entity with %s not found",id)));
+        return offerRepository.findById(id)
+                .orElseThrow(()-> new NotFoundException(String.format("the entity with %s not found",id)));
     }
 
     public List<Offer> findAllOfferByOrder(long orderId){
