@@ -58,8 +58,8 @@ public class OrderServiceTest {
     @Test
     @Order(7)
    void updateOrderStatusToStart(){
-         orderService.updateOrderStatusToStart(2L);
-        assertEquals(OrderStatus.START_SERVICE,orderService.findById(2L).getOrderStatus());
+         orderService.updateOrderStatusToStart(5L);
+        assertEquals(OrderStatus.START_SERVICE,orderService.findById(5L).getOrderStatus());
     }
 
     @Test
@@ -77,8 +77,8 @@ public class OrderServiceTest {
     @Test
     @Order(10)
     void updateOrderStatusToWaitingForChooseExpert(){
-        orderService.updateOrderStatusToWaitingForChooseExpert(2L);
-        assertEquals(OrderStatus.WAITING_FOR_CHOOSE_EXPERT,orderService.findById(2L).getOrderStatus());
+        orderService.updateOrderStatusToWaitingForChooseExpert(4L);
+        assertEquals(OrderStatus.WAITING_FOR_CHOOSE_EXPERT,orderService.findById(4L).getOrderStatus());
     }
     @Test
     @Order(11)
@@ -88,13 +88,13 @@ public class OrderServiceTest {
     @Test
     @Order(12)
     void   invalidEntityExceptionUpdateOrderStatusToDuneAndSaveRateAndDescription(){
-        assertThrows(InvalidEntityException.class, () -> orderService.updateOrderStatusToDuneAndSaveRateAndDescription(3L,"good ",7));
+        assertThrows(StatusException.class, () -> orderService.updateOrderStatusToDuneAndSaveRateAndDescription(3L,"good ",7));
     }
     @Test
     @Order(13)
     void   updateOrderStatusToDuneAndSaveRateAndDescription(){
-        orderService.updateOrderStatusToDuneAndSaveRateAndDescription(3L,"good ",4);
-        assertEquals(OrderStatus.DONE_SERVICE,orderService.findById(3L).getOrderStatus());
+        orderService.updateOrderStatusToDuneAndSaveRateAndDescription(5L,"good ",4);
+        assertEquals(OrderStatus.DONE_SERVICE,orderService.findById(5L).getOrderStatus());
 
     }
 
