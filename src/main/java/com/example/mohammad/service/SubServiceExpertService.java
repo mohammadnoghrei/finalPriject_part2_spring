@@ -25,15 +25,16 @@ public class SubServiceExpertService {
     public SubServiceExpert saveSubServiceExpert(String subServiceName, String expertUsername) {
         if (subServiceExpertRepository.findBySubServicesAndExpert(subservicesService.findBySubServiceName(subServiceName), expertService.findByUsername(expertUsername)).isPresent())
             throw new DuplicateInformationException(String.format("the entity with %s & %s is duplicate", expertUsername, subServiceName));
-        else {
-            SubServiceExpert subServiceExpert=SubServiceExpert.builder()
-                    .expert(expertService.findByUsername(expertUsername))
-                    .subServices(subservicesService.findBySubServiceName(subServiceName))
-                    .registerDate(LocalDate.now()).build();
-            return subServiceExpertRepository.save(subServiceExpert);
-        }
+
+        SubServiceExpert subServiceExpert = SubServiceExpert.builder()
+                .expert(expertService.findByUsername(expertUsername))
+                .subServices(subservicesService.findBySubServiceName(subServiceName))
+                .registerDate(LocalDate.now()).build();
+        return subServiceExpertRepository.save(subServiceExpert);
+
     }
-    public void deleteBySubServiceAndExpert(String subServiceName, String expertUsername){
-        subServiceExpertRepository.delete(findBySubServiceAndExpert(subServiceName,expertUsername));
+
+    public void deleteBySubServiceAndExpert(String subServiceName, String expertUsername) {
+        subServiceExpertRepository.delete(findBySubServiceAndExpert(subServiceName, expertUsername));
     }
 }
